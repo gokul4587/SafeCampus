@@ -8,7 +8,10 @@ const Home = () => {
                 <div className="container">
                     <h1>A Safe Space for Students</h1>
                     <p>Anonymously report concerns, find drug awareness resources, and connect with counselors. Your well-being is our priority.</p>
-                    <Link to="/report" className="btn">Report an Issue Anonymously</Link>
+                    <div className="cta-container">
+                        <Link to="/report" className="cta-btn">Submit an Anonymous Tip</Link>
+                        <Link to="/login" className="cta-btn">Wellness Hub Login</Link>
+                    </div>
                     
                     <div className="card-grid">
                         <Link to="/report" className="card">
