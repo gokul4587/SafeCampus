@@ -47,8 +47,14 @@ def get_current_user(token: str = Depends(oauth2_scheme)):
 # Dependency to get optional current user
 def get_optional_current_user(token: Optional[str] = Depends(oauth2_scheme)):
     if not token:
-        return None1    
+        return None
     return get_current_user(token)
+
+# Dependency to check for admin user
+def get_current_admin_user(current_user: dict = Depends(get_current_user)):
+    if current_user.get("role") != "admin":
+        raise HTTPException(status_code=403, detail="Not authorized to access this resource")
+    return current_user
 
 @app.post("/register")
 def register(form_data: OAuth2PasswordRequestForm = Depends()):
@@ -69,7 +75,7 @@ def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
         )
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": user['username'], "role": user['role'], "id": user['id']},
+        data={"sub": user['username'], "role": user.get('role'), "id": user['id']},
         expires_delta=access_token_expires
     )
     return {"access_token": access_token, "token_type": "bearer"}
@@ -81,6 +87,10 @@ def read_users_me(current_user: dict = Depends(get_current_user)):
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
+
+@app.get("/admin/dashboard")
+def admin_dashboard(current_user: dict = Depends(get_current_admin_user)):
+    return {"message": "Welcome to the Admin Dashboard"}
 
 @app.get("/counselors")
 def get_counselors():
@@ -103,4 +113,11 @@ def create_resource(title: str, url: str, thumbnail_url: str, current_user: dict
     if current_user['role'] != 'admin':
         raise HTTPException(status_code=403, detail="Not authorized to create resources")
     response = supabase.table('resources').insert({"title": title, "url": url, "thumbnail_url": thumbnail_url}).execute()
+    return response.data
+
+@app.post("/counselors")
+def create_counselor(name: str, current_user: dict = Depends(get_current_user)):
+    if current_user['role'] != 'admin':
+        raise HTTPException(status_code=403, detail="Not authorized to create counselors")
+    response = supabase.table('counselors').insert({"name": name}).execute()
     return response.data
