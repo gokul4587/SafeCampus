@@ -47,7 +47,7 @@ def get_current_user(token: str = Depends(oauth2_scheme)):
 # Dependency to get optional current user
 def get_optional_current_user(token: Optional[str] = Depends(oauth2_scheme)):
     if not token:
-        return None
+        return None1    
     return get_current_user(token)
 
 @app.post("/register")

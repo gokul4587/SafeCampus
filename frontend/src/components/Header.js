@@ -32,13 +32,19 @@ const Header = () => {
                         {user && user.role === 'admin' && (
                             <li><NavLink to="/admin" activeClassName="active">Admin</NavLink></li>
                         )}
-                        {user ? (
-                            <li><button onClick={handleLogout}>Logout</button></li>
-                        ) : (
-                            <li><NavLink to="/login" activeClassName="active">Login</NavLink></li>
-                        )}
                     </ul>
                 </nav>
+                <div className="user-actions">
+                    {user ? (
+                        <button onClick={handleLogout} className="logout-button">
+                            <span className="material-symbols-outlined">logout</span>
+                        </button>
+                    ) : (
+                        <Link to="/login" className="login-icon">
+                            <span className="material-symbols-outlined">account_circle</span>
+                        </Link>
+                    )}
+                </div>
             </div>
         </header>
     );

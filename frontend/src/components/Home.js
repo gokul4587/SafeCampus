@@ -8,6 +8,7 @@ const Home = () => {
                 <div className="container">
                     <h1>A Safe Space for Students</h1>
                     <p>Anonymously report concerns, find drug awareness resources, and connect with counselors. Your well-being is our priority.</p>
+                    <Link to="/report" className="btn">Report an Issue Anonymously</Link>
                     
                     <div className="card-grid">
                         <Link to="/report" className="card">
@@ -25,6 +26,27 @@ const Home = () => {
                             <h3>Get Help Now</h3>
                             <p>Find contact information for campus counselors, therapists, and national support helplines.</p>
                         </Link>
+                    </div>
+                </div>
+            </section>
+
+            <section className="container">
+                <h2>Why Campus Safe?</h2>
+                <div className="trust-grid">
+                    <div className="trust-item">
+                        <span className="material-symbols-outlined">verified_user</span>
+                        <h3>Completely Anonymous</h3>
+                        <p>Your reports are 100% anonymous. We use advanced security measures to protect your identity.</p>
+                    </div>
+                    <div className="trust-item">
+                        <span className="material-symbols-outlined">speed</span>
+                        <h3>Secure & Fast</h3>
+                        <p>Our platform is built on a secure infrastructure, ensuring your reports are submitted quickly and safely.</p>
+                    </div>
+                    <div className="trust-item">
+                        <span className="material-symbols-outlined">healing</span>
+                        <h3>Supportive Resources</h3>
+                        <p>We provide access to a wealth of resources to help you stay informed and get the support you need.</p>
                     </div>
                 </div>
             </section>

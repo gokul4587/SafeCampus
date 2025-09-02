@@ -49,7 +49,7 @@ const Admin = () => {
                             type="text"
                             id="url"
                             value={url}
-                            onChange={(e) => setUrl(e.target..value)}
+                            onChange={(e) => setUrl(e.target.value)}
                         />
                     </div>
                     <div className="form-group">
