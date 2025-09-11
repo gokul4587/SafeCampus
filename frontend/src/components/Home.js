@@ -9,8 +9,8 @@ const Home = () => {
                     <h1>A Safe Space for Students</h1>
                     <p>Anonymously report concerns, find drug awareness resources, and connect with counselors. Your well-being is our priority.</p>
                     <div className="cta-container">
-                        <Link to="/report" className="cta-btn">Submit an Anonymous Tip</Link>
-                        <Link to="/login" className="cta-btn">Wellness Hub Login</Link>
+                        <Link to="/report" className="submit-btn">Submit an Anonymous Tip</Link>
+                        <Link to="/login" className="submit-btn">Wellness Hub Login</Link>
                     </div>
                     
                     <div className="card-grid">
