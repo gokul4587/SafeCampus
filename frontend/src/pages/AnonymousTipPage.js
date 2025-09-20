@@ -1,8 +1,8 @@
 import React, { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
-import './Report.css';
+import '../components/Report.css';
 
-const Report = () => {
+const AnonymousTipPage = () => {
     const [description, setDescription] = useState('');
     const [files, setFiles] = useState([]);
 
@@ -84,4 +84,4 @@ const Report = () => {
     );
 };
 
-export default Report;
+export default AnonymousTipPage;

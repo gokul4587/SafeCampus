@@ -100,17 +100,14 @@ const Login = () => {
             <div className="form-container sign-in-container">
                 <form onSubmit={handleSignInSubmit}>
                     <h1>Sign in</h1>
-                    <span>or use your account</span>
                     <input type="email" placeholder="Email" value={signInEmail} onChange={(e) => setSignInEmail(e.target.value)} required />
                     <input type="password" placeholder="Password" value={signInPassword} onChange={(e) => setSignInPassword(e.target.value)} required />
-                    <a href="#">Forgot your password?</a>
-                    <div className="divider">OR</div>
+                    <button type="submit">Sign In</button>
+                    <div className="divider">Or continue with</div>
                     <div className="social-container">
                         <a href="#" className="social"><i className="fab fa-google"></i></a>
                         <a href="#" className="social"><i className="fab fa-apple"></i></a>
-                        <a href="#" className="social"><i className="fab fa-github"></i></a>
                     </div>
-                    <button type="submit">Sign In</button>
                 </form>
             </div>
             <div className="overlay-container">

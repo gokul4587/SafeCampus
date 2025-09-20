@@ -1,21 +1,16 @@
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode';
+import { useAuth } from '../context/AuthContext';
 
-const ProtectedRoute = () => {
-    const token = localStorage.getItem('token');
+const ProtectedRoute = ({ adminOnly = false }) => {
+    const { user } = useAuth();
 
-    if (!token) {
+    if (!user) {
         return <Navigate to="/login" />;
     }
 
-    try {
-        const decoded = jwtDecode(token);
-        if (decoded.role !== 'admin') {
-            return <Navigate to="/" />;
-        }
-    } catch (error) {
-        return <Navigate to="/login" />;
+    if (adminOnly && user.role !== 'admin') {
+        return <Navigate to="/dashboard" />;
     }
 
     return <Outlet />;

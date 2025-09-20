@@ -1,0 +1,143 @@
+/* Report.css */
+
+.report-page {
+    padding: 4rem 0;
+    background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%);
+}
+
+.report-header-section {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.report-header-section h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.report-header-section p {
+    max-width: 600px;
+    margin: 0.5rem auto 0;
+    color: #4B5563;
+}
+
+.report-card {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    padding: 2.5rem;
+}
+
+.emergency-disclaimer {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    background-color: #FEF2F2;
+    color: #991B1B;
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 2.5rem;
+}
+
+.emergency-disclaimer .material-symbols-outlined {
+    font-size: 2.5rem;
+}
+
+.report-card h2 {
+    text-align: left;
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #E5E7EB;
+    padding-bottom: 1rem;
+}
+
+.form-group {
+    margin-bottom: 2rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+}
+
+.form-group textarea {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid #D1D5DB;
+    border-radius: 12px;
+    font-size: 1rem;
+    min-height: 180px;
+    resize: vertical;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+/* --- Dropzone --- */
+.dropzone {
+    border: 2px dashed #D1D5DB;
+    border-radius: 12px;
+    padding: 2.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.3s, background-color 0.3s;
+}
+
+.dropzone.active {
+    border-color: var(--primary-color);
+    background-color: #EFF6FF;
+}
+
+.dropzone .material-symbols-outlined {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.file-previews {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.file-preview {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.file-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.remove-file-btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.1rem;
+}

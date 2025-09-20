@@ -1,49 +1,40 @@
-import React from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode';
+import React, { useState, useEffect } from 'react';
+import { Link, NavLink } from 'react-router-dom';
+import './Header.css';
 
 const Header = () => {
-    const navigate = useNavigate();
-    const token = localStorage.getItem('token');
-    let user = null;
-    if (token) {
-        try {
-            user = jwtDecode(token);
-        } catch (error) {
-            // Invalid token
-        }
-    }
+    const [menuOpen, setMenuOpen] = useState(false);
 
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        navigate('/login');
-    };
+    useEffect(() => {
+        // Close menu when screen is resized to desktop
+        const handleResize = () => {
+            if (window.innerWidth > 768) {
+                setMenuOpen(false);
+            }
+        };
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     return (
         <header className="site-header">
-            <div className="container">
+            <div className="container header-container">
                 <Link to="/" className="logo">Campus Safe</Link>
-                <nav>
-                    <ul className="nav-links">
-                        <li><NavLink to="/" end activeClassName="active">Home</NavLink></li>
-                        <li><NavLink to="/report" activeClassName="active">Report</NavLink></li>
-                        <li><NavLink to="/learn" activeClassName="active">Learn</NavLink></li>
-                        <li><NavLink to="/get-help" activeClassName="active">Get Help</NavLink></li>
-                        {user && user.role === 'admin' && (
-                            <li><NavLink to="/admin" activeClassName="active">Admin</NavLink></li>
-                        )}
-                    </ul>
+
+                <nav className={`nav-links ${menuOpen ? 'open' : ''}`}>
+                    <NavLink to="/" end>Home</NavLink>
+                    <NavLink to="/report">Report</NavLink>
+                    <NavLink to="/learn">Learn</NavLink>
+                    <NavLink to="/get-help">Get Help</NavLink>
                 </nav>
-                <div className="user-actions">
-                    {user ? (
-                        <button onClick={handleLogout} className="logout-button">
-                            <span className="material-symbols-outlined">logout</span>
-                        </button>
-                    ) : (
-                        <Link to="/login" className="login-icon">
-                            <span className="material-symbols-outlined">account_circle</span>
-                        </Link>
-                    )}
+
+                <div className="header-actions">
+                    <Link to="/login" className="login-icon" aria-label="Login">
+                        <span className="material-symbols-outlined">account_circle</span>
+                    </Link>
+                    <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu">
+                        <span className="material-symbols-outlined">{menuOpen ? 'close' : 'menu'}</span>
+                    </button>
                 </div>
             </div>
         </header>
