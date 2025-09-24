@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import './Header.css';
+import { useAuth } from '../context/AuthContext';
 
 const Header = () => {
     const [menuOpen, setMenuOpen] = useState(false);
+    const { user, logout } = useAuth();
 
     useEffect(() => {
         // Close menu when screen is resized to desktop
@@ -29,9 +31,16 @@ const Header = () => {
                 </nav>
 
                 <div className="header-actions">
-                    <Link to="/login" className="login-icon" aria-label="Login">
-                        <span className="material-symbols-outlined">account_circle</span>
-                    </Link>
+                    {user ? (
+                        <>
+                            <span>Hello, {user.name}</span>
+                            <button onClick={logout} className="logout-button">Logout</button>
+                        </>
+                    ) : (
+                        <Link to="/login" className="login-icon" aria-label="Login">
+                            <span className="material-symbols-outlined">account_circle</span>
+                        </Link>
+                    )}
                     <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu">
                         <span className="material-symbols-outlined">{menuOpen ? 'close' : 'menu'}</span>
                     </button>

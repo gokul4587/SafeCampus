@@ -1,10 +1,12 @@
 
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../Login.css';
+import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
     const [isSignUpActive, setIsSignUpActive] = useState(false);
+    const { login } = useAuth();
 
     // Sign In state
     const [signInEmail, setSignInEmail] = useState('');
@@ -32,7 +34,7 @@ const Login = () => {
         });
         if (response.ok) {
             const data = await response.json();
-            localStorage.setItem('token', data.access_token);
+            login(data.access_token);
             navigate('/');
         } else {
             // Handle error
@@ -64,13 +66,26 @@ const Login = () => {
             })
         });
         if (response.ok) {
-            // Handle success - maybe show a success message and switch to sign-in
             console.log('Signup successful');
-            setIsSignUpActive(false);
+            const tokenResponse = await fetch('/token', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams({
+                    'grant_type': 'password',
+                    'username': signUpEmail,
+                    'password': signUpPassword,
+                })
+            });
+            if (tokenResponse.ok) {
+                const data = await tokenResponse.json();
+                login(data.access_token);
+                navigate('/');
+            } else {
+                setSignUpError('Signup successful, but login failed. Please try signing in.');
+            }
         } else {
-            // Handle error
-            console.error('Signup failed');
-            // You might want to show an error message to the user
+            const errorData = await response.json();
+            setSignUpError(errorData.detail || 'Signup failed. Please try again.');
         }
     };
 
@@ -102,6 +117,7 @@ const Login = () => {
                     <h1>Sign in</h1>
                     <input type="email" placeholder="Email" value={signInEmail} onChange={(e) => setSignInEmail(e.target.value)} required />
                     <input type="password" placeholder="Password" value={signInPassword} onChange={(e) => setSignInPassword(e.target.value)} required />
+                    <Link to="/forgot-password">Forgot your password?</Link>
                     <button type="submit">Sign In</button>
                     <div className="divider">Or continue with</div>
                     <div className="social-container">
@@ -113,13 +129,13 @@ const Login = () => {
             <div className="overlay-container">
                 <div className="overlay">
                     <div className="overlay-panel overlay-left">
-                        <h1>Welcome Back!</h1>
-                        <p>To keep connected with us please login with your personal info</p>
+                        <h1>One of Us?</h1>
+                        <p>If you already have an account, just sign in. We've missed you!</p>
                         <button className="ghost" onClick={() => setIsSignUpActive(false)}>Sign In</button>
                     </div>
                     <div className="overlay-panel overlay-right">
-                        <h1>Hello, Friend!</h1>
-                        <p>Enter your personal details and start your journey with us</p>
+                        <h1>New Here?</h1>
+                        <p>Join us and start your journey. Sign up and discover a great amount of new opportunities!</p>
                         <button className="ghost" onClick={() => setIsSignUpActive(true)}>Sign Up</button>
                     </div>
                 </div>
