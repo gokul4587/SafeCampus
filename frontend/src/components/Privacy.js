@@ -12,7 +12,7 @@ const Privacy = () => {
 
                     <h2>Anonymous Reporting</h2>
                     <p>The core feature of our site is the anonymous reporting form. When you submit a report, we do not collect any personal data like your name, email, or IP address. The system is designed to ensure your identity remains completely confidential.</p>
-
+        
                     <h2>Information We Don't Collect</h2>
                     <p>We do not use tracking cookies or analytics that could identify individual users. We only care about the information you voluntarily provide in the report to help us address the issue, not who you are.</p>
 

@@ -58,6 +58,10 @@
     color: var(--text-color);
 }
 
+.login-icon.logged-in {
+    color: var(--primary-color);
+}
+
 .hamburger {
     display: none; /* Hidden on desktop */
 }

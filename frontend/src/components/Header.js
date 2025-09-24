@@ -33,7 +33,9 @@ const Header = () => {
                 <div className="header-actions">
                     {user ? (
                         <>
-                            <span>Hello, {user.name}</span>
+                            <Link to={user.role === 'admin' ? '/admin' : '/dashboard'} className="login-icon logged-in" aria-label="Dashboard">
+                                <span className="material-symbols-outlined">account_circle</span>
+                            </Link>
                             <button onClick={logout} className="logout-button">Logout</button>
                         </>
                     ) : (

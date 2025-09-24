@@ -11,24 +11,32 @@ const Login = () => {
     // Sign In state
     const [signInEmail, setSignInEmail] = useState('');
     const [signInPassword, setSignInPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const [signInError, setSignInError] = useState('');
 
     // Sign Up state
     const [signUpName, setSignUpName] = useState('');
     const [signUpEmail, setSignUpEmail] = useState('');
     const [signUpPassword, setSignUpPassword] = useState('');
     const [signUpRole, setSignUpRole] = useState('student');
-    const [signUpError, setSignUpError] = useState(''); // Added error state
+    const [signUpError, setSignUpError] = useState('');
+    const [signUpSuccess, setSignUpSuccess] = useState('');
 
     const navigate = useNavigate();
 
     const handleSignInSubmit = async (e) => {
         e.preventDefault();
-        const response = await fetch('/token', {
+        setSignInError('');
+        if (!signInEmail || !signInPassword) {
+            setSignInError('Please fill in all fields.');
+            return;
+        }
+        const response = await fetch('http://127.0.0.1:8000/token', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: new URLSearchParams({
                 'grant_type': 'password',
-                'username': signInEmail, // Assuming email is used as username for login
+                'username': signInEmail,
                 'password': signInPassword,
             })
         });
@@ -37,25 +45,24 @@ const Login = () => {
             login(data.access_token);
             navigate('/');
         } else {
-            // Handle error
-            console.error('Login failed');
-            // You might want to show an error message to the user
+            setSignInError('Login failed. Please check your credentials.');
         }
     };
 
     const handleSignUpSubmit = async (e) => {
         e.preventDefault();
-        setSignUpError(''); // Clear previous errors
+        setSignUpError('');
+        if (!signUpName || !signUpEmail || !signUpPassword) {
+            setSignUpError('Please fill in all fields.');
+            return;
+        }
 
-        // Validation for Faculty/Staff email
         if (signUpRole === 'faculty' && !signUpEmail.endsWith('@university.edu')) {
             setSignUpError('Faculty/Staff must use a valid university email address (e.g., name@university.edu).');
             return;
         }
 
-        // NOTE: This assumes your backend has a POST /users endpoint for creating a new user.
-        // You may need to adjust the endpoint and payload.
-        const response = await fetch('/users', {
+        const response = await fetch('http://127.0.0.1:8000/users/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -65,9 +72,9 @@ const Login = () => {
                 role: signUpRole,
             })
         });
+
         if (response.ok) {
-            console.log('Signup successful');
-            const tokenResponse = await fetch('/token', {
+            const tokenResponse = await fetch('http://127.0.0.1:8000/token', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: new URLSearchParams({
@@ -81,7 +88,8 @@ const Login = () => {
                 login(data.access_token);
                 navigate('/');
             } else {
-                setSignUpError('Signup successful, but login failed. Please try signing in.');
+                setSignUpError('Signup successful, but auto-login failed. Please sign in manually.');
+                setIsSignUpActive(false);
             }
         } else {
             const errorData = await response.json();
@@ -105,9 +113,12 @@ const Login = () => {
                         </label>
                     </div>
                     <span>or use your email for registration</span>
-                    <input type="text" placeholder="Name" value={signUpName} onChange={(e) => setSignUpName(e.target.value)} required />
-                    <input type="email" placeholder="Email" value={signUpEmail} onChange={(e) => setSignUpEmail(e.target.value)} required />
-                    <input type="password" placeholder="Password" value={signUpPassword} onChange={(e) => setSignUpPassword(e.target.value)} required />
+                    <input type="text" placeholder="Name" value={signUpName} onChange={(e) => setSignUpName(e.target.value)} />
+                    <input type="email" placeholder="Email" value={signUpEmail} onChange={(e) => setSignUpEmail(e.target.value)} />
+                    <div className="password-container">
+                        <input type={showPassword ? "text" : "password"} placeholder="Password" value={signUpPassword} onChange={(e) => setSignUpPassword(e.target.value)} />
+                        <i className={`fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`} onClick={() => setShowPassword(!showPassword)}></i>
+                    </div>
                     {signUpError && <p className="error-message">{signUpError}</p>}
                     <button type="submit">Sign Up</button>
                 </form>
@@ -115,8 +126,13 @@ const Login = () => {
             <div className="form-container sign-in-container">
                 <form onSubmit={handleSignInSubmit}>
                     <h1>Sign in</h1>
-                    <input type="email" placeholder="Email" value={signInEmail} onChange={(e) => setSignInEmail(e.target.value)} required />
-                    <input type="password" placeholder="Password" value={signInPassword} onChange={(e) => setSignInPassword(e.target.value)} required />
+                    {signUpSuccess && <p className="success-message">{signUpSuccess}</p>}
+                    <input type="email" placeholder="Email" value={signInEmail} onChange={(e) => setSignInEmail(e.target.value)} />
+                     <div className="password-container">
+                        <input type={showPassword ? "text" : "password"} placeholder="Password" value={signInPassword} onChange={(e) => setSignInPassword(e.target.value)} />
+                        <i className={`fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`} onClick={() => setShowPassword(!showPassword)}></i>
+                    </div>
+                    {signInError && <p className="error-message">{signInError}</p>}
                     <Link to="/forgot-password">Forgot your password?</Link>
                     <button type="submit">Sign In</button>
                     <div className="divider">Or continue with</div>
